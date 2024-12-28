@@ -247,6 +247,7 @@ void C6301::step() {
 					uint8_t r = (r_a == 0x80 ? 0x80 : -r_a);
 					r_b = r;
 
+					r_ccr_n = r >> 7;
 					r_ccr_z = !r;
 					r_ccr_v = (r == 0x80);
 					r_ccr_c = !!r;
@@ -258,6 +259,7 @@ void C6301::step() {
 					uint8_t r = (r_b == 0x80 ? 0x80 : -r_b);
 					r_b = r;
 
+					r_ccr_n = r >> 7;
 					r_ccr_z = !r;
 					r_ccr_v = (r == 0x80);
 					r_ccr_c = !!r;
@@ -271,6 +273,7 @@ void C6301::step() {
 					uint8_t r = (m == 0x80 ? 0x80 : -m);
 					memwrite(a, r);
 
+					r_ccr_n = r >> 7;
 					r_ccr_z = !r;
 					r_ccr_v = (r == 0x80);
 					r_ccr_c = !!r;
@@ -284,6 +287,7 @@ void C6301::step() {
 					uint8_t r = (m == 0x80 ? 0x80 : -m);
 					memwrite(a, r);
 
+					r_ccr_n = r >> 7;
 					r_ccr_z = !r;
 					r_ccr_v = (r == 0x80);
 					r_ccr_c = !!r;
@@ -2576,7 +2580,7 @@ void C6301::step() {
 				{
 					int8_t n = (int8_t)get_next_byte();
 
-					if (!(r_ccr_z & !(r_ccr_n ^ r_ccr_v))) {
+					if (!(r_ccr_z + (r_ccr_n ^ r_ccr_v))) {
 						r_pc += n;
 					}
 				}
